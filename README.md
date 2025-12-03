@@ -1,4 +1,4 @@
-# CS530-SDA
+# Oasis - Ecommerce Website
 The project lives on [GitHub](https://github.com/AmiraliSajadi/CS530-SDA/)
 
 This is a webapp based on JavaScript(jQuery), CSS (Bootstrap), and Python (Flask). The app was initially created to connect to PostgreSQL but we have adapted it to work with SQLite so that we can host it on tux.
