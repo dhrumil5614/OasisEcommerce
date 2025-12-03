@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<style>
+    /* You can define your custom styles here or in an external stylesheet */
+    .search-term {
+        font-family: Arial, sans-serif; /* Change the font-family as needed */
+    }
+
+    .search-query {
+        font-family: "Lucida Console", Monaco; font-style: italic;/* Change the font-family as needed */
+    }
+</style>
+
+<section id="product-description">
+    {% if products.items %}
+    <div class="flex-container">
+        <!-- This div will take up 35% of the space -->
+        <div class="header-wrapper" style="padding-top: 20px;">
+            <div class="searchterm" data-auto-id="plp-header-bar-search-container">
+                {% if search_query %}
+                <div>search for:</div>
+                <h1 class="gl-vspace heading___3g-L_ heading--search" style="margin-top: 20px;">
+                    “{{ search_query }}” <span class="count___11uU6 gl-body--s" data-auto-id="plp-header-bar-products-count" style="font-size: 12px;">{{ products.total }}</span>
+                </h1>
+                {% else %}
+                <div>search for:</div>
+                <h1 class="gl-vspace heading___3g-L_ heading--search" style="margin-top: 20px;">
+                    “All Products” <span class="count___11uU6 gl-body--s" data-auto-id="plp-header-bar-products-count" style="font-size: 12px;">[{{ products.total }}]</span>
+                </h1>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- This div will be blank and take up the remaining 65% of the space -->
+        <div class="blank-div"></div>
+    </div>
+    {% endif %}
+</section>
+
+<hr>
+
+<section id="product-description">
+
+
+    <div class="multicard">
+        {% if products.items %}
+
+        {% for product in products.items %}
+        <div class="product-card" onclick="redirectToProductDetails('{{ product.id }}')">
+            <img src="{{ product.image_url }}" alt="{{ product.name }}" style="height: 380px;">
+            <div class="product-info">
+                <span class="product-brand">{{ product.category.name }}</span>
+                <!-- Assuming category is included in product data -->
+                <div class="product-name">
+                    <h5>{{ product.name }}</h5>
+                </div>
+
+                <div class="price">${{ product.price }}</div>
+            </div>
+            <!-- <button class="heart-button" >❤</button> -->
+            <div class="item-card" data-product-id="{{ product.id }}"
+                data-user-id="{{ current_user.id if current_user.is_authenticated else 'none' }}">
+                <button class="heart-button">🤍</button> <!-- Ensure this line is present -->
+            </div>
+            <button class="add-button"><i class="fa fa-shopping-cart"></i></button>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No products found matching your search.</p>
+        {% endif %}
+    </div>
+
+
+</section>
+
+
+<section id="pagination" class="pagination">
+    <div class="pagination-container">
+        {% if products.pages > 1 %}
+        <div class="pagination">
+            <button class="btn-prev">
+                {% if products.has_prev %}
+                <a href="{{ url_for('search', page=products.prev_num, search=search_query) }}">Prev</a>
+                {% endif %}
+            </button>
+            <ul class="pagination">
+                {% for page_num in products.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                {% if page_num %}
+                {% if products.page == page_num %}
+                <li class="page-item active">
+                    <a class="page-link">{{ page_num }}</a>
+                </li>
+                {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('search', page=page_num, search=search_query) }}">{{ page_num
+                        }}</a>
+                </li>
+                {% endif %}
+                {% else %}
+                <li class="page-item">...</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            <button class="btn-next">
+                {% if products.has_next %}
+                <a href="{{ url_for('search', page=products.next_num, search=search_query) }}">Next</a>
+                {% endif %}
+            </button>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<script>
+    function redirectToProductDetails(productId) {
+        window.location.href = "/product_details/" + productId;
+    }
+</script>
+
+{% endblock %}

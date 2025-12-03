@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block main_content %}
+
+<div class="container mt-5">
+  <h2>Sell Your Item</h2>
+  <form id="sellItemForm" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="productImages">Product Images</label>
+      <input type="file" class="form-control-file" id="productImages" name="productImages" accept="image/*" multiple required>
+      <small class="form-text text-muted">Upload at least 3 images of your product.</small>
+    </div>  
+    <div class="form-group">
+      <label for="productName">Name of the Product</label>
+      <input type="text" class="form-control" id="productName" name="productName" placeholder="Enter product name" required>
+    </div>
+    <div class="form-group">
+      <label for="shortDescription">Short Description</label>
+      <input type="text" class="form-control" id="shortDescription" name="shortDescription" placeholder="Enter short description" required>
+    </div>
+    <div class="form-group">
+      <label for="fullDescription">Full Description</label>
+      <textarea class="form-control" id="fullDescription" name="fullDescription" rows="3" placeholder="Enter full description" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="productCategory">Product Category</label>
+      <select class="form-control" id="productCategory" name="productCategory" required>
+        <option value="">Select a category</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Clothing">Clothing</option>
+        <option value="Home_garden">Home & Garden</option>
+        <option value="Sports">Sports</option>
+        <option value="Toys">Toys</option>
+        <!-- Add other categories as needed -->
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="productPrice">Price</label>
+      <input type="number" class="form-control" id="productPrice" name="productPrice" placeholder="Enter product price" required>
+    </div>
+    <div class="form-group">
+      <label for="productQuantity">Quantity</label>
+      <input type="number" class="form-control" id="productQuantity" name="productQuantity" placeholder="Enter product quantity" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+{% endblock %}

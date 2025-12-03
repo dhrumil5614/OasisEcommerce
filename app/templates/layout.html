@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" type="text/css" href="../static/css/main.css">
+
+  <title>Oasis</title>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class="header" data-header>
+    <div class="container">
+
+      <div class="overlay" data-overlay></div>
+
+      <a href="{{url_for('home')}}" class="logo">
+        <img src="../static/img/logo.png" alt="Oasis logo" width="130" height="11">
+      </a>
+
+
+      <div class="header-search" id="searchForm">
+        <form action="{{ url_for('search') }}" method="POST">
+
+          <input type="text" name="search" placeholder="Search Product..." class="input-field">
+
+          <button class="search-btn" aria-label="Search" type="submit">
+            <i class='fa fa-search'></i>
+          </button>
+        </form>
+
+
+      </div>
+
+      <div class="header-actions" id = "nav-btns">
+
+        <!-- <button class="header-action-btn" id="signInLink">
+          <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
+
+          <p class="header-action-label">Sign in</p>
+        </button> -->
+
+
+
+        
+ <!-- loginbutton  -->
+
+        <button class="header-action-btn dropdown">
+          <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+
+          <p class="header-action-label"><i class="fa-solid fa-user"></i></p>
+          {% if not current_user.is_authenticated%}
+          <div class="dropdown-content">
+            <a href="{{url_for('login')}}" class="navbar-link">Login</a>
+            <a href="{{url_for('register')}}" class="navbar-link">Register</a>
+          </div>
+          {% else %}
+          <div class="dropdown-content">
+            <a href="{{url_for('userProfile')}}" class="navbar-link">Profile</a>
+            <a href="{{url_for('logout')}}" class="navbar-link">Logout</a>
+          </div>
+          {% endif %}
+
+        </button>
+
+        <button class="header-action-btn dropdown">
+          <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
+          <p class="header-action-label">tempSignIn</p>
+          <div class="dropdown-content">
+            <a href="{{url_for('login')}}" class="navbar-link">Login</a>
+            <a href="{{url_for('register')}}" class="navbar-link">Register</a>
+          </div>
+        </button>
+
+        <button class="header-action-btn" data-toggle="modal" data-target="#cartModal" id="cartButton">
+          <ion-icon name="cart-outline" aria-hidden="true"></ion-icon>
+          <p class="header-action-label"><i class="fa-solid fa-cart-shopping"></i></p>
+        </button>
+
+        <button class="header-action-btn" id="wishlistButton">
+          <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+
+          <p class="header-action-label"><i class="fa-solid fa-heart"></i></p>
+
+          <!-- <div class="btn-badge" aria-hidden="true">2</div> -->
+        </button>
+
+      </div>
+
+      <button class="nav-open-btn" data-nav-open-btn aria-label="Open Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="navbar" data-navbar>
+        <div class="navbar-top">
+
+          <a href="{{url_for('home')}}" class="logo">
+            <img src="../static/img/logo.png" alt="Casmart logo" width="130" height="31">
+          </a>
+
+          <button class="nav-close-btn" data-nav-close-btn aria-label="Close Menu">
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+
+        </div>
+
+        <ul class="navbar-list">
+          <li>
+            <a href="{{url_for('home')}}" class="navbar-link">Home</a>
+          </li>
+          <li>
+            <a href="{{url_for('products')}}" class="navbar-link">Shop</a>
+          </li>
+          <li>
+            <a href="{{url_for('about')}}" class="navbar-link">About</a>
+          </li>
+
+          <li>
+            {% if current_user.is_authenticated%}
+
+            <a href="{{url_for('sell')}}" class="navbar-link">Sell</a>
+            {%else%}
+            <a href="{{url_for('login')}}" class="navbar-link">Sell</a>
+            {%endif%}
+
+          </li>
+          <li class="dropdown">
+            <a href="#" class="navbar-link">Categories</a>
+            <div class="dropdown-content">
+              <!-- <a href="#" class="navbar-link">Electronics</a>
+              <a href="#" class="navbar-link">Clothings</a>
+              <a href="#" class="navbar-link">Home and Garderns</a>
+              <a href="#" class="navbar-link">Sports</a>
+              <a href="#" class="navbar-link">Toys</a> -->
+              {% for category in categories %}
+              <a href="{{ url_for('products', category_name=category.name) }}" class="navbar-link">{{ category.name }}</a>
+              {% endfor %}
+
+              <!-- Add more categories as needed -->
+            </div>
+
+        </ul>
+
+      </nav>
+
+    </div>
+  </header>
+
+  <main role="main" class="main-container">
+    {%block main_content%}{%endblock%}
+
+    {%block content%}{%endblock%}
+  </main>
+  <!-- #### Footer -->
+
+  <div class="footer">
+    <div class="footer_container grid">
+      <div class="footer_content">
+        <a href="{{url_for('home')}}" class="footer_logo"><img src="../static/img/logo1.png" alt="Oasis logo"
+            width="130" height="45"></a>
+
+        <p class="footer_description">We help people to find their lives better <br> with our products</p>
+
+        <div>
+          <a href="#" class="footer_social-link">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="footer_social-link">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" class="footer_social-link">
+            <i class="fab fa-twitter"></i>
+          </a>
+
+        </div>
+
+      </div>
+      <div class="footer_content">
+        <h3 class="footer_title">About</h3>
+        <ul class="footer_link">
+          <li><a href="{{url_for('about')}}" class="footer_link">About us</a></li>
+          <li><a href="{{url_for('sell')}}" class="footer_link">Sell</a></li>
+          <li><a href="#" class="footer_link">Privacy Policy</a></li>
+          <li><a href="#" class="footer_link">Terms & Conditions</a></li>
+
+        </ul>
+      </div>
+      <div class="footer_content">
+        <!-- Newsletter section -->
+        <h3 class="footer_title">Our Newsletter</h3>
+        <p>Subscribe to our newsletter to get the latest updates.</p>
+        <form action="#" method="POST" class="footer_newsletter-form">
+          <input type="email" placeholder="Your Email Address" required>
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+
+    <span class="footer_copy">&#169; 2021 Oasis. All right reserved</span>
+
+  </div>
+
+
+
+  <!-- Sign In Modal -->
+  <div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="signInModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="signInModalLabel">Sign In</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Sign In Form -->
+          <form id="signInForm">
+            <div class="form-group">
+              <label for="email">Email address</label>
+              <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                placeholder="Enter email">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-primary">Sign In</button>
+          </form>
+          <p class="mt-3">New user? <a href="#" id="showSignUp">Sign up</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sign Up Modal -->
+  <div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="signUpModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="signUpModalLabel">Sign Up</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Sign Up Form -->
+          <form id="signUpForm">
+            <div class="form-group">
+              <label for="emailSignUp">Email address</label>
+              <input type="email" class="form-control" id="emailSignUp" aria-describedby="emailHelp"
+                placeholder="Enter email">
+            </div>
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" class="form-control" id="username" placeholder="Username">
+            </div>
+            <div class="form-group">
+              <label for="passwordSignUp">Password</label>
+              <input type="password" class="form-control" id="passwordSignUp" placeholder="Password">
+            </div>
+            <div class="form-group">
+              <label for="confirmPassword">Confirm Password</label>
+              <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password">
+            </div>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <div id="cartSidebar" class="sidebar">
+    <div style="width: 100%; height: 150px;"></div>
+    <p>Your Cart Items:</p>
+    <ul id="cartItems"></ul>
+    <p>Total: $<span id="cartTotal">0.00</span></p>
+    <button id="finalizeTransactionBtn">Finalize Transaction</button>
+  </div>
+
+  <div id="wishlistSidebar" class="sidebar">
+    <div style="width: 100%; height: 150px;"></div>
+    <p>Your Wishlist Items:</p>
+    <ol id="wishlistItems"></ol>
+  </div>
+
+  <!-- </article> -->
+
+  <!-- </main> -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="../static/js/modal.js"></script>
+  <script src="../static/js/cart_wishlist.js"></script>
+  <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+</body>
+
+</html>
